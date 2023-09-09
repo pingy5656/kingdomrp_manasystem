@@ -7,27 +7,23 @@ local jobManaConfig = {
 }
 
 local weaponManaCost = {
-    ["swep_dex_plasmid_explosion"] = 10,
+    ["swep_dex_plasmid_bleed"] = 10,
+    ["swep_dex_plasmid_bubbles"] = 5,
+    ["swep_dex_plasmid_electricity"] = 45,
+    ["swep_dex_plasmid_explosion"] = 50,
+    ["swep_dex_plasmid_fire"] = 35,
+    ["swep_dex_plasmid_heal"] = 15,
+    ["swep_dex_plasmid_ice"] = 80,
+    ["swep_dex_plasmid_seagull"] = 5,
+    ["swep_dex_plasmid_sickness"] = 65,
+    ["swep_dex_plasmid_telekinesis"] = 70,
+    ["swep_dex_plasmid_teleport"] = 35,
+    ["swep_dex_plasmid_water"] = 15,
 }
 
 local function getMaxManaForJob(jobName)
     return jobManaConfig[jobName] or 0
 end
-
-hook.Add("EntityFireBullets", "ManaWeaponFire", function(ent, data)
-    if not ent:IsPlayer() then return end  -- Ensure the entity is a player
-    local weapon = ent:GetActiveWeapon()   -- Get the weapon the player is using
-
-    if not IsValid(weapon) then return end -- Ensure the weapon is valid
-
-    -- Check if the weapon is the one we're interested in
-    if weapon:GetClass() == "swep_dex_plasmid_explosion" then
-        -- Deduct mana and check if the player has enough
-        if not DeductManaForWeapon(ent, weapon:GetClass()) then
-            return false  -- Prevent the bullet from being fired
-        end
-    end
-end)
 
 local PLAYER = FindMetaTable("Player")
 
@@ -56,8 +52,6 @@ function PLAYER:DeductManaForWeapon(weaponClass)
         return false
     end
 end
-
-
 
 hook.Add("PlayerInitialSpawn", "InitializeMana", function(ply)
     local maxMana = getMaxManaForJob(ply:Team())
